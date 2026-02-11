@@ -32,13 +32,13 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDJchdKXOc38XYYxzy1hzDH_8ATyhNCfWw",
-    authDomain: "unisync-1dd43.firebaseapp.com",
-    projectId: "unisync-1dd43",
-    storageBucket: "unisync-1dd43.firebasestorage.app",
-    messagingSenderId: "109097243889",
-    appId: "1:109097243889:web:1668f91c4a0a415fa00550",
-    measurementId: "G-KTFYF8YF97"
+    apiKey: "-",
+    authDomain: "-",
+    projectId: "-",
+    storageBucket: "-",
+    messagingSenderId: "-",
+    appId: "-",
+    measurementId: "-"
 };
 
 // Initialize Firebase
@@ -235,5 +235,6 @@ window.signInWithEmailAndPassword = signInWithEmailAndPassword;
 window.onAuthStateChanged = onAuthStateChanged;
 window.signOut = signOut;
 window.updateProfile = updateProfile;
+
 
 console.log('Firebase initialized successfully with collection operations!');
