@@ -43,11 +43,6 @@ A personalized productivity tool designed to optimize study sessions.
 * **Icons:** FontAwesome (or similar library used)
 * *[Add any other frameworks used, e.g., React, Tailwind, Node.js]*
 
-## 📸 Screenshots
-
-| Landing Page | BrainBrew Focus |
-|:---:|:---:|
-| *[Add Screenshot]* | *[Add Screenshot]* |
 
 ## 📦 Installation & Setup
 
