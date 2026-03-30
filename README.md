@@ -41,7 +41,7 @@ A personalized productivity tool designed to optimize study sessions.
 * **Frontend:** HTML5, CSS3, JavaScript (ES6+)
 * **Hosting:** Netlify
 * **Icons:** FontAwesome (or similar library used)
-* *[Add any other frameworks used, e.g., React, Tailwind, Node.js]*
+
 
 
 ## 📦 Installation & Setup
