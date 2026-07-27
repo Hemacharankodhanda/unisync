@@ -107,3 +107,5 @@ Distributed under the MIT License. See the `LICENSE` file in the repository for 
 
 * **Support:** support@unisync.edu
 * **Project Link:** [https://github.com/your-username/unisync](https://github.com/your-username/unisync)
+
+new version coming soon
