@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+  /* Glassmorphism Dark Theme */
+  --bg-primary: #0f0f1a;
+  --bg-secondary: rgba(255, 255, 255, 0.04);
+  --bg-tertiary: rgba(255, 255, 255, 0.07);
+
+  /* Glass surfaces */
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-hover: rgba(255, 255, 255, 0.1);
+  --glass-active: rgba(255, 255, 255, 0.14);
+  --glass-strong: rgba(255, 255, 255, 0.12);
+
+  /* Borders */
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-glass-strong: rgba(255, 255, 255, 0.18);
+
+  /* Text */
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.55);
+  --text-tertiary: rgba(255, 255, 255, 0.35);
+
+  /* One accent color only */
+  --accent: #7c6ef0;
+  --accent-dim: rgba(124, 110, 240, 0.15);
+  --accent-border: rgba(124, 110, 240, 0.35);
+
+  /* Semantic (muted) */
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.3);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-primary: #e8e8ee;
+  --bg-secondary: rgba(255, 255, 255, 0.5);
+  --bg-tertiary: rgba(255, 255, 255, 0.6);
+
+  --glass: rgba(255, 255, 255, 0.45);
+  --glass-hover: rgba(255, 255, 255, 0.6);
+  --glass-active: rgba(255, 255, 255, 0.7);
+  --glass-strong: rgba(255, 255, 255, 0.55);
+
+  --border-glass: rgba(255, 255, 255, 0.6);
+  --border-glass-strong: rgba(255, 255, 255, 0.8);
+
+  --text-primary: rgba(15, 15, 26, 0.9);
+  --text-secondary: rgba(15, 15, 26, 0.55);
+  --text-tertiary: rgba(15, 15, 26, 0.35);
+
+  --accent: #6d5de0;
+  --accent-dim: rgba(109, 93, 224, 0.12);
+  --accent-border: rgba(109, 93, 224, 0.3);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+/* ===== GLASS PRIMITIVES ===== */
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-glass-strong);
+  transform: translateY(-2px);
+}
+
+/* ===== BUTTONS ===== */
+.btn-touch {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  user-select: none;
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.btn-touch:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-glass-strong);
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-icon:hover {
+  background: var(--glass-hover);
+  color: var(--text-primary);
+  border-color: var(--border-glass-strong);
+}
+
+/* ===== FOCUS ===== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: var(--glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(8px);
+}
+
+.badge-violet { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
+.badge-cyan { background: rgba(56, 189, 248, 0.1); color: rgba(56, 189, 248, 0.8); border-color: rgba(56, 189, 248, 0.2); }
+.badge-emerald { background: rgba(74, 222, 128, 0.1); color: rgba(74, 222, 128, 0.8); border-color: rgba(74, 222, 128, 0.2); }
+.badge-amber { background: rgba(251, 191, 36, 0.1); color: rgba(251, 191, 36, 0.8); border-color: rgba(251, 191, 36, 0.2); }
+.badge-rose { background: rgba(248, 113, 113, 0.1); color: rgba(248, 113, 113, 0.8); border-color: rgba(248, 113, 113, 0.2); }
+
+/* ===== INPUT CONTROLS ===== */
+.input-touch {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 14px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.15s ease;
+}
+
+.input-touch:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.input-touch::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Windows Chromium requires solid 24-bit HEX colors (no RGBA or alpha) for native select dropdown boxes and option items */
+select.input-touch,
+select {
+  background-color: #131320 !important;
+  color: #ffffff !important;
+}
+
+select.input-touch option,
+select option,
+option {
+  background-color: #131320 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] select.input-touch,
+[data-theme="light"] select,
+[data-theme="light"] select.input-touch option,
+[data-theme="light"] select option,
+[data-theme="light"] option {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== LAYOUT ===== */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-bottom: 80px;
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    padding-bottom: 24px;
+    margin-left: 240px;
+  }
+}
+
+/* ===== GRID ===== */
+.grid-bento {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .grid-bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-bento {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
