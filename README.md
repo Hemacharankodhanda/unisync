@@ -1,16 +1,11 @@
+
 # React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+This template provides a streamlined setup to get React running in Vite, complete with Hot Module Replacement (HMR) and baseline Oxlint rules.
+## Core Plugins
+You can choose between two official plugins for handling React:
+ * **@vitejs/plugin-react:** The standard plugin, powered by Oxc.
+ * **@vitejs/plugin-react-swc:** A faster alternative powered by SWC.
+## React Compiler (Opt-In)
+To keep your development and build speeds as fast as possible, the React Compiler is disabled by default. If you'd like to enable it, follow the official installation guide.
+## Production & TypeScript Setup
+If you're building a production application, we highly recommend using TypeScript to unlock type-aware linting. Check out the official TS template to see how to properly integrate TypeScript and Oxlint's advanced rules into your workflow.
