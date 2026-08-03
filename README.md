@@ -148,11 +148,7 @@ UniSync uses Supabase Postgres with Row Level Security enabled on every table. C
 
 Full SQL migrations are in `/supabase/migrations`.
 
----
 
-## 🤝 Contributing
-
-This project is currently maintained as a solo/academic build. Issues and suggestions are welcome — feel free to open an issue before submitting a PR.
 
 ---
 
