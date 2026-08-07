@@ -41,17 +41,17 @@ export default function LostAndFound({ items, onAddItem, searchQuery, setSearchQ
       {/* Header */}
       <div className="glass-panel" style={{ padding: '18px 20px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
         <h1 style={{ fontSize: '1.25rem', margin: 0 }}>Lost & Found</h1>
-        <button onClick={() => setIsReportOpen(true)} className="btn-touch btn-primary" style={{ borderRadius: '8px', fontSize: '0.825rem' }}>
+        <button onClick={() => setIsReportOpen(true)} className="btn-touch btn-primary" style={{ borderRadius: 'var(--radius-sm)', fontSize: '0.825rem' }}>
           <Plus size={15} /> Report Item
         </button>
       </div>
 
       {/* Filters */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: '4px', background: 'var(--glass)', padding: '3px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+        <div style={{ display: 'flex', gap: '4px', background: 'var(--glass)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)' }}>
           {['All', 'Lost', 'Found', 'Claimed'].map(tab => (
             <button key={tab} onClick={() => setFilter(tab)} className="btn-touch"
-              style={{ padding: '5px 12px', minHeight: '30px', borderRadius: '8px', fontSize: '0.78rem',
+              style={{ padding: '5px 12px', minHeight: '30px', borderRadius: 'var(--radius-sm)', fontSize: '0.78rem',
                 background: filter === tab ? 'var(--accent)' : 'transparent',
                 color: filter === tab ? '#fff' : 'var(--text-secondary)', fontWeight: filter === tab ? 600 : 400 }}>
               {tab}
@@ -104,7 +104,7 @@ export default function LostAndFound({ items, onAddItem, searchQuery, setSearchQ
                 <span style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>{item.contact}</span>
                 <button onClick={() => showToast(item.status === 'Claimed' ? 'Already resolved.' : `Contacting ${item.contact}`, item.status === 'Claimed' ? 'info' : 'success')}
                   className={`btn-touch ${item.status === 'Claimed' ? 'btn-secondary' : 'btn-primary'}`}
-                  style={{ padding: '3px 10px', minHeight: '28px', fontSize: '0.72rem', borderRadius: '6px' }} disabled={item.status === 'Claimed'}>
+                  style={{ padding: '3px 10px', minHeight: '28px', fontSize: '0.72rem', borderRadius: 'var(--radius-sm)' }} disabled={item.status === 'Claimed'}>
                   <Mail size={11} /> {item.status === 'Claimed' ? 'Resolved' : 'Contact'}
                 </button>
               </div>

@@ -1,12 +1,11 @@
 import React from 'react';
-import { LayoutDashboard, Search, ShoppingBag, Utensils, Users, Cpu } from 'lucide-react';
+import { LayoutDashboard, Search, ShoppingBag, Users, Cpu } from 'lucide-react';
 
 export default function BottomNav({ currentTab, setCurrentTab }) {
   const tabs = [
     { id: 'dashboard', label: 'Home', icon: LayoutDashboard },
     { id: 'marketplace', label: 'Shop', icon: ShoppingBag },
     { id: 'lostAndFound', label: 'Lost', icon: Search },
-    { id: 'foodTracker', label: 'Food', icon: Utensils },
     { id: 'studyGroups', label: 'Study', icon: Users },
     { id: 'brainbrew', label: 'Focus', icon: Cpu }
   ];
@@ -25,7 +24,7 @@ export default function BottomNav({ currentTab, setCurrentTab }) {
             className="btn-touch"
             style={{
               flexDirection: 'column', gap: '2px', padding: '4px 6px',
-              minWidth: '40px', minHeight: '42px', borderRadius: '10px',
+              minWidth: '40px', minHeight: '42px', borderRadius: 'var(--radius-sm)',
               background: isActive ? 'var(--accent-dim)' : 'transparent',
               color: isActive ? 'var(--accent)' : 'var(--text-tertiary)',
               border: isActive ? '1px solid var(--accent-border)' : '1px solid transparent'

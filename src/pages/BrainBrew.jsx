@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Cpu, Play, Pause, RotateCcw, Zap, Volume2, VolumeX, Headphones } from 'lucide-react';
-import { ambientSoundscapes } from '../data/mockData';
+
+const ambientSoundscapes = [
+  { id: "lofi", name: "Lo-Fi Study Beats 🎧", icon: "Headphones", desc: "Relaxed synth chillhop chords for deep coding" },
+  { id: "rain", name: "Gentle Rainstorm 🌧️", icon: "CloudRain", desc: "Soothing raindrops against window panes" },
+  { id: "library", name: "Quiet Library Whispers 📖", icon: "BookOpen", desc: "Subtle page turning and soft ambient acoustics" },
+  { id: "cafe", name: "Cozy Campus Cafe ☕", icon: "Coffee", desc: "Warm coffee machine hum and distant chatter" },
+  { id: "fire", name: "Crackling Fireplace 🔥", icon: "Flame", desc: "Cozy wood burning campfire crackles" }
+];
 
 export default function BrainBrew({ profile, onUpdateEnergy, showToast, triggerConfetti }) {
   const [energy, setEnergy] = useState(profile.energyLevel || 'Balanced');
@@ -59,7 +66,7 @@ export default function BrainBrew({ profile, onUpdateEnergy, showToast, triggerC
             return (
               <button key={opt.id} onClick={() => handleEnergySelect(opt.id)}
                 style={{
-                  padding: '14px', borderRadius: '12px', textAlign: 'center',
+                  padding: '14px', borderRadius: 'var(--radius-sm)', textAlign: 'center',
                   background: isSelected ? 'var(--accent-dim)' : 'var(--glass)',
                   border: isSelected ? '1px solid var(--accent-border)' : '1px solid var(--border-glass)',
                   cursor: 'pointer', transition: 'all 0.15s ease',
@@ -97,7 +104,7 @@ export default function BrainBrew({ profile, onUpdateEnergy, showToast, triggerC
               className="btn-touch btn-secondary" style={{ padding: '4px 10px', minHeight: '32px', fontSize: '0.78rem' }} disabled={isActive}>-5m</button>
             <button onClick={() => { setIsActive(!isActive); if (!isActive) showToast('Focus session started.', 'info'); }}
               className={`btn-touch ${isActive ? 'btn-secondary' : 'btn-primary'}`}
-              style={{ padding: '8px 24px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 600 }}>
+              style={{ padding: '8px 24px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem', fontWeight: 600 }}>
               {isActive ? <><Pause size={15} /> Pause</> : <><Play size={15} /> Start</>}
             </button>
             <button onClick={() => { setIsActive(false); setTimeLeft(durationMinutes*60); }}
@@ -112,7 +119,7 @@ export default function BrainBrew({ profile, onUpdateEnergy, showToast, triggerC
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <h3 style={{ fontSize: '0.95rem', margin: 0 }}>2. Soundscape</h3>
             <button onClick={() => { setIsPlayingSound(!isPlayingSound); showToast(isPlayingSound ? 'Audio muted.' : 'Audio on.', 'info'); }}
-              className="btn-touch btn-secondary" style={{ padding: '3px 8px', fontSize: '0.7rem', minHeight: '26px', borderRadius: '6px' }}>
+              className="btn-touch btn-secondary" style={{ padding: '3px 8px', fontSize: '0.7rem', minHeight: '26px', borderRadius: 'var(--radius-sm)' }}>
               {isPlayingSound ? <><Volume2 size={12} /> On</> : <><VolumeX size={12} /> Off</>}
             </button>
           </div>
@@ -123,7 +130,7 @@ export default function BrainBrew({ profile, onUpdateEnergy, showToast, triggerC
                 <button key={s.id}
                   onClick={() => { setActiveSound(s.id); setIsPlayingSound(true); showToast(`Playing: ${s.name}`, 'info'); }}
                   style={{
-                    padding: '10px 12px', borderRadius: '10px', textAlign: 'left', width: '100%',
+                    padding: '10px 12px', borderRadius: 'var(--radius-sm)', textAlign: 'left', width: '100%',
                     background: isSel ? 'var(--accent-dim)' : 'var(--glass)',
                     border: isSel ? '1px solid var(--accent-border)' : '1px solid var(--border-glass)',
                     cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between',

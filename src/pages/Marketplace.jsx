@@ -73,7 +73,7 @@ export default function Marketplace({ items, onAddItem, onMarkSold, onRemoveItem
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '44px', height: '44px', borderRadius: '12px', background: 'var(--accent)',
+            width: '44px', height: '44px', borderRadius: 'var(--radius-sm)', background: 'var(--accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
             boxShadow: '0 4px 12px rgba(124, 110, 240, 0.35)'
           }}>
@@ -88,18 +88,18 @@ export default function Marketplace({ items, onAddItem, onMarkSold, onRemoveItem
         </div>
 
         <button onClick={() => { setContactInfo(profile?.email || ''); setIsSellOpen(true); }}
-          className="btn-touch btn-primary" style={{ padding: '8px 16px', borderRadius: '10px', fontSize: '0.88rem' }}>
+          className="btn-touch btn-primary" style={{ padding: '8px 16px', borderRadius: 'var(--radius-sm)', fontSize: '0.88rem' }}>
           <Plus size={16} /> List Item for Sale
         </button>
       </div>
 
       {/* Filter & Search Bar */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', background: 'var(--glass)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border-glass)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', background: 'var(--glass)', padding: '4px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)' }}>
           {categories.map(cat => (
             <button key={cat} onClick={() => setCategoryFilter(cat)} className="btn-touch"
               style={{
-                padding: '6px 12px', minHeight: '32px', borderRadius: '8px', fontSize: '0.78rem',
+                padding: '6px 12px', minHeight: '32px', borderRadius: 'var(--radius-sm)', fontSize: '0.78rem',
                 background: categoryFilter === cat ? 'var(--accent)' : 'transparent',
                 color: categoryFilter === cat ? '#fff' : 'var(--text-secondary)',
                 fontWeight: categoryFilter === cat ? 600 : 400
@@ -113,7 +113,7 @@ export default function Marketplace({ items, onAddItem, onMarkSold, onRemoveItem
           <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)' }} />
           <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search textbooks, tech, dorm..." className="input-touch"
-            style={{ paddingLeft: '36px', borderRadius: '10px', fontSize: '0.82rem' }} />
+            style={{ paddingLeft: '36px', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem' }} />
         </div>
       </div>
 
@@ -162,7 +162,7 @@ export default function Marketplace({ items, onAddItem, onMarkSold, onRemoveItem
                     </div>
                   )}
 
-                  <div style={{ position: 'absolute', bottom: '8px', right: '10px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: '4px' }}>
+                  <div style={{ position: 'absolute', bottom: '8px', right: '10px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 'var(--radius-sm)' }}>
                     {item.category} • {item.date}
                   </div>
                 </div>
@@ -184,7 +184,7 @@ export default function Marketplace({ items, onAddItem, onMarkSold, onRemoveItem
                         <>
                           {!isSold && (
                             <button onClick={() => onMarkSold(item.id)} className="btn-touch btn-secondary"
-                              style={{ padding: '4px 10px', minHeight: '30px', fontSize: '0.75rem', borderRadius: '6px', color: 'var(--success)' }}>
+                              style={{ padding: '4px 10px', minHeight: '30px', fontSize: '0.75rem', borderRadius: 'var(--radius-sm)', color: 'var(--success)' }}>
                               <CheckCircle2 size={13} /> Mark Sold
                             </button>
                           )}
@@ -198,7 +198,7 @@ export default function Marketplace({ items, onAddItem, onMarkSold, onRemoveItem
                           showToast(`Contacting seller: ${item.contact_info}`, 'info');
                           if (item.contact_info.includes('@')) window.location.href = `mailto:${item.contact_info}?subject=UniSync Marketplace: ${item.title}`;
                         }} disabled={isSold} className={`btn-touch ${isSold ? 'btn-secondary' : 'btn-primary'}`}
-                          style={{ padding: '5px 12px', minHeight: '30px', fontSize: '0.76rem', borderRadius: '6px' }}>
+                          style={{ padding: '5px 12px', minHeight: '30px', fontSize: '0.76rem', borderRadius: 'var(--radius-sm)' }}>
                           <Mail size={13} /> {isSold ? 'Sold' : 'Contact'}
                         </button>
                       )}

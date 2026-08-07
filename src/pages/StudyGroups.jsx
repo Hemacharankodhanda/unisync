@@ -42,16 +42,16 @@ export default function StudyGroups({ groups, onAddGroup, onToggleJoin, profile,
     <div className="animate-fade-in" style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div className="glass-panel" style={{ padding: '18px 20px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
         <h1 style={{ fontSize: '1.25rem', margin: 0 }}>Study Groups</h1>
-        <button onClick={() => setIsCreateOpen(true)} className="btn-touch btn-primary" style={{ borderRadius: '8px', fontSize: '0.825rem' }}>
+        <button onClick={() => setIsCreateOpen(true)} className="btn-touch btn-primary" style={{ borderRadius: 'var(--radius-sm)', fontSize: '0.825rem' }}>
           <Plus size={15} /> Create
         </button>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: '4px', background: 'var(--glass)', padding: '3px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+        <div style={{ display: 'flex', gap: '4px', background: 'var(--glass)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)' }}>
           {['All', 'In-Person', 'Virtual', 'Hybrid'].map(tab => (
             <button key={tab} onClick={() => setTypeFilter(tab)} className="btn-touch"
-              style={{ padding: '5px 12px', minHeight: '30px', borderRadius: '8px', fontSize: '0.78rem',
+              style={{ padding: '5px 12px', minHeight: '30px', borderRadius: 'var(--radius-sm)', fontSize: '0.78rem',
                 background: typeFilter === tab ? 'var(--accent)' : 'transparent',
                 color: typeFilter === tab ? '#fff' : 'var(--text-secondary)', fontWeight: typeFilter === tab ? 600 : 400 }}>
               {tab}
@@ -83,7 +83,7 @@ export default function StudyGroups({ groups, onAddGroup, onToggleJoin, profile,
                   <h3 style={{ fontSize: '0.95rem', marginBottom: '3px' }}>{g.courseName}</h3>
                   <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 12px', lineHeight: 1.3 }}>{g.topic}</p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.72rem', color: 'var(--text-secondary)', padding: '8px 10px',
-                    borderRadius: '8px', background: 'var(--glass)', border: '1px solid var(--border-glass)', marginBottom: '10px' }}>
+                    borderRadius: 'var(--radius-sm)', background: 'var(--glass)', border: '1px solid var(--border-glass)', marginBottom: '10px' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><Calendar size={12} /> {g.date}</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><MapPin size={12} /> {g.location}</span>
                   </div>
@@ -106,13 +106,13 @@ export default function StudyGroups({ groups, onAddGroup, onToggleJoin, profile,
                 <div style={{ display: 'flex', gap: '6px', paddingTop: '10px', marginTop: '10px', borderTop: '1px solid var(--border-glass)' }}>
                   {g.resourcesLink && (
                     <a href={g.resourcesLink} target="_blank" rel="noopener noreferrer" className="btn-touch btn-secondary"
-                      style={{ padding: '4px 8px', fontSize: '0.72rem', minHeight: '30px', borderRadius: '6px' }}>
+                      style={{ padding: '4px 8px', fontSize: '0.72rem', minHeight: '30px', borderRadius: 'var(--radius-sm)' }}>
                       <ExternalLink size={12} /> Notes
                     </a>
                   )}
                   <button onClick={() => handleJoin(g)}
                     className={`btn-touch ${g.joined ? 'btn-secondary' : full ? 'btn-secondary' : 'btn-primary'}`}
-                    style={{ flex: 1, fontSize: '0.78rem', minHeight: '30px', borderRadius: '6px',
+                    style={{ flex: 1, fontSize: '0.78rem', minHeight: '30px', borderRadius: 'var(--radius-sm)',
                       border: g.joined ? '1px solid var(--accent-border)' : undefined }}
                     disabled={!g.joined && full}>
                     {g.joined ? <><CheckCircle2 size={13} /> Joined</> : full ? 'Full' : <><UserCheck size={13} /> Join</>}

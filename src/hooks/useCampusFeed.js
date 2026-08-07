@@ -18,7 +18,17 @@ export function useCampusFeed(userId, showToast) {
         `)
         .order('created_at', { ascending: false });
 
-      if (err) throw err;
+      if (err) {
+        console.warn('Supabase fetch failed:', err.message);
+        setLoading(false);
+        throw err;
+      }
+
+      if (!rows || rows.length === 0) {
+        setData([]);
+        setLoading(false);
+        return;
+      }
 
       const emojiMap = {
         'Campus Pulse': 'Campus Pulse 📢',
@@ -52,6 +62,7 @@ export function useCampusFeed(userId, showToast) {
       setData(mapped);
     } catch (err) {
       console.error('Error fetching campus feed:', err);
+      setData([]);
       setError(err);
       if (showToast) showToast('Failed to load campus feed.', 'error');
     } finally {
@@ -97,14 +108,45 @@ export function useCampusFeed(userId, showToast) {
         else cleanCat = 'Campus Pulse';
       }
 
-      const { error: err } = await supabase.from('campus_feed').insert({
+      const emojiMap = {
+        'Campus Pulse': 'Campus Pulse 📢',
+        'Hackathon': 'Hackathon 💻',
+        'Study Tip': 'Study Tip 🧠',
+        'Club Event': 'Club Event 📅'
+      };
+      const catText = emojiMap[cleanCat] || 'Campus Pulse 📢';
+
+      // Optimistic update
+      const optimisticPost = {
+        id: newPost.id || 'c_' + Date.now(),
+        author: newPost.author || { name: 'You', role: 'Student', avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${userId}`, verified: true },
+        time: 'Just now',
+        category: catText,
+        content: newPost.content,
+        likes: 0,
+        comments: 0,
+        likedByMe: false,
+        image: newPost.image || null
+      };
+
+      setData(prev => [optimisticPost, ...prev]);
+
+      const { data: result, error: err } = await supabase.from('campus_feed').insert({
         author_id: userId,
         content: newPost.content,
         category: cleanCat,
         image_url: newPost.image || null
-      });
+      }).select();
 
-      if (err) throw err;
+      console.log('Insert Result:', result, 'Error:', err);
+
+      if (err) {
+        console.warn('Could not save to Supabase:', err);
+        alert(`Database Error: ${err.message}\nHint: ${err.hint || 'No hint'}\nDetails: ${err.details || 'No details'}`);
+        if (showToast) showToast(`Failed to post: ${err.message}`, 'error');
+      } else {
+        fetchFeed();
+      }
       return { error: null };
     } catch (err) {
       console.error('Error creating post:', err);
@@ -147,5 +189,48 @@ export function useCampusFeed(userId, showToast) {
     }
   };
 
-  return { data, loading, error, createPost, toggleLike, refetch: fetchFeed };
+  const fetchComments = async (postId) => {
+    try {
+      const { data: comments, error: err } = await supabase
+        .from('campus_feed_comments')
+        .select(`
+          id, content, created_at,
+          author:profiles!author_id(id, full_name, avatar_url, major)
+        `)
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true });
+
+      if (err) throw err;
+      return { comments: comments || [], error: null };
+    } catch (err) {
+      console.error('Error fetching comments:', err);
+      return { comments: [], error: err };
+    }
+  };
+
+  const addComment = async (postId, content) => {
+    if (!userId) {
+      if (showToast) showToast('Please sign in to comment.', 'error');
+      return { error: new Error('Not signed in') };
+    }
+    
+    try {
+      const { error: err } = await supabase
+        .from('campus_feed_comments')
+        .insert({
+          post_id: postId,
+          author_id: userId,
+          content: content
+        });
+
+      if (err) throw err;
+      return { error: null };
+    } catch (err) {
+      console.error('Error adding comment:', err);
+      if (showToast) showToast(`Error adding comment: ${err.message}`, 'error');
+      return { error: err };
+    }
+  };
+
+  return { data, loading, error, createPost, toggleLike, fetchComments, addComment, refetch: fetchFeed };
 }

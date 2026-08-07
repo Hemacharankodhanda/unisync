@@ -1,9 +1,8 @@
 import React from 'react';
-import { Search, ShoppingBag, Utensils, Users, Cpu, ArrowRight, Award } from 'lucide-react';
+import { Search, ShoppingBag, Users, Cpu, ArrowRight, Award } from 'lucide-react';
 
-export default function Dashboard({ profile, lostItems, foodItems, studyGroups, marketplaceItems = [], setCurrentTab }) {
+export default function Dashboard({ profile, lostItems, studyGroups, marketplaceItems = [], setCurrentTab }) {
   const activeLostCount = (lostItems || []).filter(i => i.status === 'Lost').length;
-  const inStockFoodCount = (foodItems || []).filter(f => f.status === 'In Stock').length;
   const myGroupsCount = (studyGroups || []).filter(g => g.joined).length;
   const activeMarketCount = (marketplaceItems || []).filter(i => i.status === 'Available').length;
 
@@ -26,14 +25,13 @@ export default function Dashboard({ profile, lostItems, foodItems, studyGroups, 
           { id: 'profile', icon: Award, title: 'Rewards & Points', badge: `${profile?.totalPoints || profile?.total_points || 0} pts earned` },
           { id: 'marketplace', icon: ShoppingBag, title: 'Marketplace', badge: `${activeMarketCount} listed` },
           { id: 'lostAndFound', icon: Search, title: 'Lost & Found', badge: `${activeLostCount} active` },
-          { id: 'foodTracker', icon: Utensils, title: 'Food Tracker', badge: `${inStockFoodCount} in stock` },
           { id: 'studyGroups', icon: Users, title: 'Study Groups', badge: `${myGroupsCount} joined` },
           { id: 'brainbrew', icon: Cpu, title: 'Focus Studio', badge: `${profile?.streak || 1} day streak` },
         ].map((mod) => (
           <div key={mod.id} onClick={() => setCurrentTab(mod.id)} className="glass-card"
             style={{ padding: '18px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'var(--glass-hover)',
+              <div style={{ width: '36px', height: '36px', borderRadius: 'var(--radius-sm)', background: 'var(--glass-hover)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <mod.icon size={18} color="var(--text-secondary)" />
               </div>

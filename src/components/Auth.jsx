@@ -45,7 +45,7 @@ export default function Auth() {
         {/* Brand Header */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{
-            width: '52px', height: '52px', borderRadius: '16px',
+            width: '52px', height: '52px', borderRadius: 'var(--radius-sm)',
             background: 'var(--accent)', display: 'inline-flex',
             alignItems: 'center', justifyContent: 'center', color: '#fff',
             marginBottom: '14px', boxShadow: '0 8px 20px rgba(124, 110, 240, 0.4)'

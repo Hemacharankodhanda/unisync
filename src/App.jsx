@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { supabase } from './lib/supabaseClient';
 import Auth from './components/Auth';
 import { useLostItems } from './hooks/useLostItems';
-import { useFoodItems } from './hooks/useFoodItems';
 import { useStudyGroups } from './hooks/useStudyGroups';
 import { useCampusFeed } from './hooks/useCampusFeed';
 import { useMarketplace } from './hooks/useMarketplace';
 import { usePoints } from './hooks/usePoints';
-import { initialProfile } from './data/mockData';
+
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import BottomNav from './components/BottomNav';
@@ -16,7 +15,6 @@ import Modal from './components/Modal';
 import Dashboard from './pages/Dashboard';
 import LostAndFound from './pages/LostAndFound';
 import Marketplace from './pages/Marketplace';
-import FoodTracker from './pages/FoodTracker';
 import StudyGroups from './pages/StudyGroups';
 import BrainBrew from './pages/BrainBrew';
 import CampusFeed from './pages/CampusFeed';
@@ -25,13 +23,13 @@ import { CheckCircle2, AlertCircle, Info, Loader2, Award } from 'lucide-react';
 function GlassSkeleton() {
   return (
     <div className="animate-fade-in" style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div className="glass-panel" style={{ padding: '24px', height: '70px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="glass-panel" style={{ padding: '24px', height: '70px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <Loader2 size={20} className="animate-spin" color="var(--accent)" />
         <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Syncing real-time campus data...</span>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
         {[1, 2, 3, 4].map(i => (
-          <div key={i} className="glass-card" style={{ padding: '20px', height: '140px', borderRadius: '16px', opacity: 0.6 }} />
+          <div key={i} className="glass-card" style={{ padding: '20px', height: '140px', borderRadius: 'var(--radius-sm)', opacity: 0.6 }} />
         ))}
       </div>
     </div>
@@ -47,13 +45,17 @@ export default function App() {
   // Auth state
   const [session, setSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
-  const [profile, setProfile] = useState(initialProfile);
+  const [profile, setProfile] = useState({});
   const [toast, setToast] = useState({ message: '', type: 'info', visible: false });
+  const toastTimeoutRef = useRef(null);
 
-  const showToast = (message, type = 'info') => {
+  const showToast = useCallback((message, type = 'info') => {
     setToast({ message, type, visible: true });
-    setTimeout(() => setToast(p => ({ ...p, visible: false })), 2800);
-  };
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    toastTimeoutRef.current = setTimeout(() => setToast(p => ({ ...p, visible: false })), 2800);
+  }, []);
 
   const fetchProfile = async (user) => {
     setAuthLoading(true);
@@ -77,13 +79,25 @@ export default function App() {
           totalPoints: data.total_points || 0
         });
       } else {
+        const fallbackName = user.user_metadata?.full_name || user.email.split('@')[0];
+        const fallbackMajor = user.user_metadata?.major || 'Campus Student';
+        const fallbackAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.email)}`;
+        
+        // Ensure profile exists in DB to prevent foreign key errors for feed/market inserts
+        await supabase.from('profiles').insert({
+          id: user.id,
+          full_name: fallbackName,
+          major: fallbackMajor,
+          avatar_url: fallbackAvatar
+        }).catch(() => {}); // ignore potential race condition duplicate errors
+
         setProfile({
           id: user.id,
-          name: user.user_metadata?.full_name || user.email.split('@')[0],
+          name: fallbackName,
           email: user.email,
-          major: user.user_metadata?.major || 'Campus Student',
+          major: fallbackMajor,
           year: 'Senior (Class of \'27)',
-          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.email)}`,
+          avatar: fallbackAvatar,
           streak: 1,
           energyLevel: 'Balanced',
           totalPoints: 0
@@ -103,7 +117,7 @@ export default function App() {
   const validateAndHandleSession = async (session) => {
     if (!session?.user) {
       setSession(null);
-      setProfile(initialProfile);
+      setProfile({});
       setAuthLoading(false);
       return;
     }
@@ -112,7 +126,7 @@ export default function App() {
     if (!email.toLowerCase().endsWith('@vitapstudent.ac.in')) {
       await supabase.auth.signOut();
       setSession(null);
-      setProfile(initialProfile);
+      setProfile({});
       setAuthLoading(false);
       showToast('Please sign in with your VIT-AP student email (@vitapstudent.ac.in)', 'error');
       return;
@@ -134,7 +148,7 @@ export default function App() {
       window.history.replaceState(null, '', window.location.pathname);
       supabase.auth.signOut();
       setSession(null);
-      setProfile(initialProfile);
+      setProfile({});
       setAuthLoading(false);
       showToast('Please sign in with your VIT-AP student email (@vitapstudent.ac.in)', 'error');
       return;
@@ -162,13 +176,6 @@ export default function App() {
     addItem: addLostItem
   } = useLostItems(userId, userEmail, showToast);
 
-  const {
-    data: foodItems,
-    loading: foodLoading,
-    error: foodError,
-    addItem: addFoodItem,
-    vote: voteFoodItem
-  } = useFoodItems(userId, showToast);
 
   const {
     data: studyGroups,
@@ -183,7 +190,9 @@ export default function App() {
     loading: feedLoading,
     error: feedError,
     createPost: addFeedPost,
-    toggleLike: toggleLikeFeed
+    toggleLike: toggleLikeFeed,
+    fetchComments,
+    addComment
   } = useCampusFeed(userId, showToast);
 
   const {
@@ -217,7 +226,7 @@ export default function App() {
   if (authLoading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
-        <div className="glass-panel" style={{ padding: '24px 40px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="glass-panel" style={{ padding: '24px 40px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Loader2 size={22} className="animate-spin" color="var(--accent)" />
           <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Connecting to UniSync...</span>
         </div>
@@ -275,7 +284,7 @@ export default function App() {
             <button
               onClick={async () => { await supabase.auth.signOut(); showToast('Signed out.', 'info'); }}
               className="btn-touch"
-              style={{ marginTop: '24px', padding: '8px 20px', borderRadius: '10px', background: 'rgba(248, 113, 113, 0.15)', color: 'var(--danger)', border: '1px solid rgba(248, 113, 113, 0.3)', fontSize: '0.82rem', fontWeight: 600 }}
+              style={{ marginTop: '24px', padding: '8px 20px', borderRadius: 'var(--radius-sm)', background: 'rgba(248, 113, 113, 0.15)', color: 'var(--danger)', border: '1px solid rgba(248, 113, 113, 0.3)', fontSize: '0.82rem', fontWeight: 600 }}
             >
               Sign Out
             </button>
@@ -324,17 +333,15 @@ export default function App() {
 
     switch (currentTab) {
       case 'dashboard':
-        if (lostLoading || foodLoading || studyLoading || feedLoading || marketLoading) return <GlassSkeleton />;
-        return <Dashboard profile={profile} lostItems={lostItems} foodItems={foodItems} studyGroups={studyGroups} marketplaceItems={marketplaceItems} setCurrentTab={setCurrentTab} />;
+        if (lostLoading || studyLoading || feedLoading || marketLoading) return <GlassSkeleton />;
+        return <Dashboard profile={profile} lostItems={lostItems} studyGroups={studyGroups} marketplaceItems={marketplaceItems} setCurrentTab={setCurrentTab} />;
       case 'marketplace':
         if (marketLoading) return <GlassSkeleton />;
         return <Marketplace items={marketplaceItems} onAddItem={async (item) => { const res = await addMarketItem(item); if (!res.error) triggerConfetti(); }} onMarkSold={markMarketSold} onRemoveItem={removeMarketItem} profile={profile} showToast={showToast} />;
       case 'lostAndFound':
         if (lostLoading) return <GlassSkeleton />;
         return <LostAndFound items={lostItems} onAddItem={async (item) => { const res = await addLostItem(item); if (!res.error) triggerConfetti(); }} searchQuery={searchQuery} setSearchQuery={setSearchQuery} showToast={showToast} />;
-      case 'foodTracker':
-        if (foodLoading) return <GlassSkeleton />;
-        return <FoodTracker items={foodItems} onAddItem={async (item) => { const res = await addFoodItem(item); if (!res.error) triggerConfetti(); }} onVoteItem={voteFoodItem} showToast={showToast} />;
+
       case 'studyGroups':
         if (studyLoading) return <GlassSkeleton />;
         return <StudyGroups groups={studyGroups} onAddGroup={async (group) => { const res = await addStudyGroup(group); if (!res.error) triggerConfetti(); }} onToggleJoin={async (id) => { const group = studyGroups.find(g => g.id === id); const wasJoined = group?.joined; await toggleJoinGroup(id); if (!wasJoined) triggerConfetti(); }} profile={profile} showToast={showToast} triggerConfetti={triggerConfetti} />;
@@ -342,7 +349,7 @@ export default function App() {
         return <BrainBrew profile={profile} onUpdateEnergy={handleUpdateEnergy} showToast={showToast} triggerConfetti={triggerConfetti} />;
       case 'campusFeed':
         if (feedLoading) return <GlassSkeleton />;
-        return <CampusFeed feed={campusFeed} onAddPost={async (post) => { const res = await addFeedPost(post); if (!res.error) triggerConfetti(); }} onToggleLike={toggleLikeFeed} profile={profile} showToast={showToast} />;
+        return <CampusFeed feed={campusFeed} onAddPost={async (post) => { const res = await addFeedPost(post); if (!res.error) triggerConfetti(); return res; }} onToggleLike={toggleLikeFeed} fetchComments={fetchComments} addComment={addComment} profile={profile} showToast={showToast} />;
       default:
         return null;
     }
@@ -366,7 +373,6 @@ export default function App() {
           {[
             { id: 'marketplace', label: 'Sell Item', desc: 'List textbook or tech', color: 'var(--warning)', action: () => { setIsQuickActionOpen(false); setCurrentTab('marketplace'); } },
             { id: 'lostAndFound', label: 'Report Item', desc: 'Lost or found on campus', color: 'var(--accent)', action: () => { setIsQuickActionOpen(false); setCurrentTab('lostAndFound'); } },
-            { id: 'foodTracker', label: 'Add Menu Item', desc: 'Dining hall update', color: 'var(--success)', action: () => { setIsQuickActionOpen(false); setCurrentTab('foodTracker'); } },
             { id: 'studyGroups', label: 'Create Group', desc: 'Study room for a course', color: 'var(--accent)', action: () => { setIsQuickActionOpen(false); setCurrentTab('studyGroups'); } },
             { id: 'campusFeed', label: 'Post Update', desc: 'Announce to campus', color: 'var(--accent)', action: () => { setIsQuickActionOpen(false); setCurrentTab('campusFeed'); } },
           ].map((a) => (

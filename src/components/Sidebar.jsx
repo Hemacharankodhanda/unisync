@@ -1,12 +1,11 @@
 import React from 'react';
-import { LayoutDashboard, Search, ShoppingBag, Utensils, Users, Cpu, Radio } from 'lucide-react';
+import { LayoutDashboard, Search, ShoppingBag, Users, Cpu, Radio } from 'lucide-react';
 
 export default function Sidebar({ currentTab, setCurrentTab }) {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'marketplace', label: 'Marketplace', icon: ShoppingBag },
     { id: 'lostAndFound', label: 'Lost & Found', icon: Search },
-    { id: 'foodTracker', label: 'Food Tracker', icon: Utensils },
     { id: 'studyGroups', label: 'Study Groups', icon: Users },
     { id: 'brainbrew', label: 'Focus Studio', icon: Cpu },
     { id: 'campusFeed', label: 'Campus Feed', icon: Radio }
@@ -26,7 +25,7 @@ export default function Sidebar({ currentTab, setCurrentTab }) {
             <button key={item.id} onClick={() => setCurrentTab(item.id)}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
-                padding: '8px 10px', borderRadius: '8px',
+                padding: '8px 10px', borderRadius: 'var(--radius-sm)',
                 background: isActive ? 'var(--accent-dim)' : 'transparent',
                 border: isActive ? '1px solid var(--accent-border)' : '1px solid transparent',
                 color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
