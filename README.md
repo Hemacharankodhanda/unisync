@@ -151,13 +151,3 @@ Full SQL migrations are in `/supabase/migrations`.
 
 
 ---
-
-## 📄 License
-
-MIT — free to use, modify, and build on.
-
----
-
-## 🙏 Acknowledgments
-
-Built for the VIT-AP student community, with a focus on zero-cost, portfolio-worthy engineering using free-tier tools throughout.
