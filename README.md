@@ -146,7 +146,6 @@ UniSync uses Supabase Postgres with Row Level Security enabled on every table. C
 - `marketplace_items` — peer-to-peer listings
 - `points_ledger` — auditable point-earning history
 
-Full SQL migrations are in `/supabase/migrations`.
 
 
 
