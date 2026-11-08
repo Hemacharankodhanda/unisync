@@ -144,8 +144,7 @@ UniSync uses Supabase Postgres with Row Level Security enabled on every table. C
 - `study_groups` / `study_group_members` — study room rosters
 - `campus_feed` / `campus_feed_likes` — social stream
 - `marketplace_items` — peer-to-peer listings
-- `points_ledger` — auditable point-earning history
-
+- `points_led
 
 
 
